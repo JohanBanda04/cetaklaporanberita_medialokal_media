@@ -183,6 +183,7 @@
                                 $cont = [];
                             @endphp
                             @foreach($links_media_lokal as $il=>$dl)
+
                                 @if($media->kode_media==explode("|||",$dl)[0])
                                     @php
                                         $counting +=1;
@@ -191,7 +192,22 @@
 
                                     @endphp
                                     {{--untuk tampilan text link:--}}
-                                    {{ ($counting.".".explode("|||",$dl)[2]) }}.<?php echo "<br>";?>
+                                    @php
+                                        $dt_linkberita = explode("|||",$dl);
+
+                                        if(!empty($dt_linkberita[2])){
+                                            echo $counting.".".$dt_linkberita[2]."<br>";
+                                        }
+
+                                        if(empty($dt_linkberita[2])){
+                                            echo $counting."."."tittle or link doesnt exist yet"."<br>";
+                                        }
+
+
+
+
+                                    @endphp
+
                                     @php $total_per_media[$idx]+= $counting; @endphp
                                 @elseif($media->kode_media!=explode("|||",$dl)[0])
                                     @php
