@@ -808,7 +808,7 @@
 
                         '</td>' +
                         '<td style=""><div class="row"><div class=col-4><select required name="kode_media[]" id="kode_media[]" class="form-select"><option value="">-Nama Media-</option><option value="no media">-No Media-</option>' +
-                        '@foreach($getmedia as $id=>$med)<option value="{{ $med->kode_media }}">{{ $med->name }}</option>@endforeach</select></div>'+
+                        '@foreach($getmedia as $id=>$med)<option value="{{ $med->kode_media }}">{{ $med->name }}</option>@endforeach</select></div>' +
                         '<div class="col-8"><input type="text" name="jumlah[]" id="jumlah[]" class="jumlah_medlok form-control" placeholder="Judul Berita|||Link Media Lokal"> </div></div>' +
                         '</td>' +
                         '</tr>' +
@@ -837,8 +837,9 @@
 
                         '</td>' +
                         '<td style=""><div class="row"><div class="col-4"><select required name="kode_media_nasional[]" id="kode_media_nasional[]" class="form-select">' +
-                        '<option value="">-Nama Media-</option><option value="no media">-No Media-</option>@foreach($getmedia as $idk=>$mednas)<option value="{{ $mednas->kode_media }}">{{ $mednas->name }}</option>@endforeach</select></div>'+
-                        '<div class="col-8"><input type="text" name="jumlah_nasional[]" id="jumlah_nasional[]" class="jumlah_mednas form-control" placeholder="Judul Berita|||Link Media Nasional" required ></div></div> ' +
+                        '<option value="">-Nama Media-</option><option value="no media">-No Media-</option>@foreach($getmedia as $idk=>$mednas)<option value="{{ $mednas->kode_media }}">{{ $mednas->name }}</option>@endforeach</select></div>' +
+                        '<div class="col-8"><input type="text" name="jumlah_nasional[]" id="jumlah_nasional[]" ' +
+                        'class="jumlah_mednas form-control" placeholder="Judul Berita|||Link Media Nasional" required ></div></div> ' +
 
                         '</td>' +
                         '</tr>' +
@@ -1137,8 +1138,7 @@
 
                 //return false;
                 var jumlah_medlok = document.getElementsByClassName('jumlah_medlok');
-                var jumlah_mednas = document.getElementsByClassName('jumlah_mednas');
-                for (var i = 0; i <= jumlah_medlok.length; i++) {
+                for (var i = 0; i < jumlah_medlok.length; i++) {
                     keywordsArr = jumlah_medlok[i].value.split('|||');
                     if (keywordsArr.length < 2) {
                         Swal.fire({
@@ -1148,18 +1148,18 @@
                             confirmButtonText: 'Ok'
                         }).then((result) => {
                             $('#jumlah[' + i + ']').focus();
-
-                            jumlah_medlok[i].style.backgroundColor = "#f00";
                             //$(jumlah_medlok[i]).addClass("error");
                             // setTimeout(function(){
                             //     // some code
                             //     jumlah_medlok[i].style.backgroundColor = "";
-                            // },3000);
+                            // },1000);
+                            jumlah_medlok[i].style.backgroundColor = "#f00";
+
                         });
                         return false;
-                    }
-                    if (keywordsArr.length == 2) {
+                    } else if (keywordsArr.length == 2) {
                         //alert(keywordsArr[1])
+                        jumlah_medlok[i].style.backgroundColor = "";
                         if (keywordsArr[1] == "") {
                             Swal.fire({
                                 title: 'Warning!',
@@ -1173,31 +1173,55 @@
                                 //     // some code
                                 //     jumlah_medlok[i].style.backgroundColor = "";
                                 // },3000);
+
                             });
                             return false;
+                        } else if(keywordsArr[1] != ""){
+                            jumlah_medlok[i].style.backgroundColor = "";
                         }
-                    }
-                    //return false;
-                }
-                //return false;
-                /*batas validasi link media lokal*/
 
-                for (var j = 0; j <= jumlah_mednas.length; j++) {
-                    keywordsArr_nasional = jumlah_mednas[j].value.split('|||');
-                    if (keywordsArr_nasional.length < 2) {
+                    } else if (keywordsArr.length > 2) {
+                        //alert("inputan link berita terlalu panjang");
+                        //return false;
+                        Swal.fire({
+                            title: 'Warning',
+                            text: 'Inputan Data Link Media Lokal Terlalu Panjang',
+                            icon: 'warning',
+                            confirmButtonColor: 'Ok',
+                        }).then((result) => {
+                            $('#jumlah[' + i + ']').focus();
+                            jumlah_medlok[i].style.backgroundColor = "#f00";
+                            //document.getElementById("jumlah["+i+"]").style.background = "#f00";
+                        });
+                        return false;
+                    }
+                    //return true;
+                }
+                //alert("pret");
+                //return false;
+
+                var jumlah_mednas = document.getElementsByClassName('jumlah_mednas');
+                for (var k = 0; k<jumlah_mednas.length; k++){
+                    keywordsArr_nasional = jumlah_mednas[k].value.split("|||");
+                    if(keywordsArr_nasional.length < 2){
                         Swal.fire({
                             title: 'Warning!',
                             text: 'Link Media Nasional Belum Terisi Lengkap',
                             icon: 'warning',
                             confirmButtonText: 'Ok'
                         }).then((result) => {
-                            $('#jumlah_nasional[' + j + ']').focus();
+                            $('#jumlah_nasional[' + k + ']').focus();
+                            //$(jumlah_medlok[i]).addClass("error");
+                            // setTimeout(function(){
+                            //     // some code
+                            //     jumlah_medlok[i].style.backgroundColor = "";
+                            // },1000);
+                            jumlah_mednas[k].style.backgroundColor = "#f00";
 
-                            jumlah_mednas[j].style.backgroundColor = "#f00";
                         });
                         return false;
-                    } else if (keywordsArr_nasional.length == 2) {
-                        //alert(keywordsArr[1])
+                    } else if(keywordsArr_nasional.length == 2){
+                        jumlah_mednas[k].style.backgroundColor = "";
                         if (keywordsArr_nasional[1] == "") {
                             Swal.fire({
                                 title: 'Warning!',
@@ -1205,18 +1229,38 @@
                                 icon: 'warning',
                                 confirmButtonText: 'Ok'
                             }).then((result) => {
-                                $('#jumlah_nasional[' + j + ']').focus();
-                                jumlah_mednas[j].style.backgroundColor = "#f00";
+                                $('#jumlah_nasional[' + k + ']').focus();
+                                jumlah_mednas[k].style.backgroundColor = "#f00";
+                                // setTimeout(function(){
+                                //     // some code
+                                //     jumlah_medlok[i].style.backgroundColor = "";
+                                // },3000);
+
                             });
                             return false;
+                        } else if(keywordsArr_nasional[1] != ""){
+                            jumlah_mednas[k].style.backgroundColor = "";
                         }
+                    } else if (keywordsArr_nasional.length > 2) {
+                        //alert("inputan link berita terlalu panjang");
+                        //return false;
+                        Swal.fire({
+                            title: 'Warning',
+                            text: 'Inputan Data Link Media Nasional Terlalu Panjang',
+                            icon: 'warning',
+                            confirmButtonColor: 'Ok',
+                        }).then((result) => {
+                            $('#jumlah_nasional[' + k + ']').focus();
+                            jumlah_mednas[k].style.backgroundColor = "#f00";
+                            //document.getElementById("jumlah["+i+"]").style.background = "#f00";
+
+                        });
+                        return false;
                     }
                 }
 
 
-
             });
-
         });
     </script>
 @endpush
