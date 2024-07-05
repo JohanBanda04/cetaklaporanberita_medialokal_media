@@ -108,42 +108,34 @@ class DashboardController extends Controller
             $tgl_sampai_default = $request->sampai;
         }
 
-        //echo $tgl_dari_default; die;
-
         /*24-04-2024 data untuk dashboard humas satker*/
         /*=================*/
         /*23-04-2024 data untuk dashboard humas kanwil*/
+        $data_zonaAll_Media = [];
         if (auth()->user()->roles == 'humas_kanwil' || auth()->user()->roles == 'humas_satker') {
             //echo "dashboard humas kanwil broy"; die;
             $data_zonaAll_Kanwil = ['Website', 'Sosial Media', 'Media Lokal', 'Media Nasional'];
 
             /*di intervensi lagi*/
-            if (auth()->user()->roles=="humas_kanwil") {
+            if (auth()->user()->roles == "humas_kanwil") {
+                /*disini intervensi penyebabnya jikalaupun humas kanwil belum / tidak memiliki mediapartner*/
                 $data_zonaAll_Media = DB::table('mediapartner')->get();
-
-            } else if (auth()->user()->roles=="humas_satker") {
+            } else if (auth()->user()->roles == "humas_satker") {
                 $data_zonaAll_Media = DB::table('mediapartner')
                     ->where('kode_satker_penjalin', auth()->user()->kode_satker)
                     ->get();
-
-
             }
-            //echo "<pre>"; print_r($data_zonaAll_Media);die;
+
             //die;
             $counter_media = 0;
-            //echo auth()->user()->roles; die;
             foreach ($data_zonaAll_Media as $indmed => $valmed) {
 
                 $get_nama_humas = DB::table('satker')->where('kode_satker', $valmed->kode_satker_penjalin)->first();
-                //echo "<pre>"; print_r($valmed)."<br>";
-                //echo $get_nama_humas->name."<br>";
-                //$kode_media_with_penjalin =
                 $zona_media_list_ii[$counter_media] = $valmed->name . " (" . $get_nama_humas->name . ")";
                 $zona_kodemedia_list_ii[$counter_media] = $valmed->kode_media;
 
                 $counter_media++;
             }
-            //die;
 
             $counter_jenis_publikasi = 0;
             $counter_kanwil = 0;
@@ -461,10 +453,10 @@ where tgl_input BETWEEN '$tgl_dari_default' and '$tgl_sampai_default' group by k
 
 
             /*intervensi dulu*/
-            if(auth()->user()->roles=="humas_kanwil"){
+            if (auth()->user()->roles == "humas_kanwil") {
                 $get_media = DB::table("mediapartner")->get();
 
-            } else if(auth()->user()->roles=="humas_satker"){
+            } else if (auth()->user()->roles == "humas_satker") {
                 $get_media = DB::table('mediapartner')
                     ->where('kode_satker_penjalin', auth()->user()->kode_satker)
                     ->get();
@@ -492,18 +484,20 @@ where tgl_input BETWEEN '$tgl_dari_default' and '$tgl_sampai_default' group by k
             }
             //echo "ini humas kanwil";
 
-        } else if(auth()->user()->roles == "humas_satker"){
+        } else if (auth()->user()->roles == "humas_satker") {
             //echo "ini humas satker";
             //echo auth()->user()->kode_satker;
             $getBeritaLinkMedia = DB::table('berita')
-                ->where('kode_satker',auth()->user()->kode_satker)
-                ->whereBetween('tgl_input',[$tgl_dari_default,$tgl_sampai_default])
+                ->where('kode_satker', auth()->user()->kode_satker)
+                ->whereBetween('tgl_input', [$tgl_dari_default, $tgl_sampai_default])
                 ->get();
+            /*sebenarnya hasil $getBeritaLinkMedia diatas sudah pasti berita oleh Satker yang login,
+            hanya saja mengikuti pola dari kondisi coding untuk roles Humas Kanwil diatas nya*/
 
             $counter_statushumas = 0;
             $berita_humas = [];
 
-            foreach ($getBeritaLinkMedia as $index_linkmedia => $value_linkmedia){
+            foreach ($getBeritaLinkMedia as $index_linkmedia => $value_linkmedia) {
                 $get_status_humas = DB::table('satker')->where('kode_satker', $value_linkmedia->kode_satker)->get();
                 foreach ($get_status_humas as $index_statushumas => $value_statushumas) {
                     if ($value_statushumas->roles == "humas_satker") {
@@ -531,10 +525,10 @@ where tgl_input BETWEEN '$tgl_dari_default' and '$tgl_sampai_default' group by k
             }
 
             /*intervensi dulu II*/
-            if(auth()->user()->roles=="humas_kanwil"){
+            if (auth()->user()->roles == "humas_kanwil") {
                 $get_media = DB::table("mediapartner")->get();
 
-            } else if(auth()->user()->roles=="humas_satker"){
+            } else if (auth()->user()->roles == "humas_satker") {
                 //echo "humas satker cuy"; die;
                 $get_media = DB::table('mediapartner')
                     ->where('kode_satker_penjalin', auth()->user()->kode_satker)
@@ -557,10 +551,6 @@ where tgl_input BETWEEN '$tgl_dari_default' and '$tgl_sampai_default' group by k
                 }
             }
         }
-//        echo $tgl_dari_default."<br>";
-//        echo $tgl_sampai_default."<br>";
-//        echo "<pre>"; print_r($getBeritaLinkMedia);
-//        die;
 
         $realisasi_publikasi_total_linkmedia = $array_sum_medlok;
         if (auth()->user()->roles == 'superadmin') {
@@ -570,8 +560,11 @@ where tgl_input BETWEEN '$tgl_dari_default' and '$tgl_sampai_default' group by k
                 'realisasi_publikasi_total', 'total', 'tgl_dari_default', 'tgl_sampai_default'));
         } else if (auth()->user()->roles == 'humas_kanwil') {
             //echo "laman dashboard LAST KANWIL broyyy"; die;
-            //echo "<pre>"; print_r($nama_zona_publikasi); die;
-            //echo "return view dashboard humas kanwil broy"; die;
+            //echo $data_zonaAll_Media->count(); die;
+            if ($data_zonaAll_Media->count() <= 0) {
+                $zona_media_list_ii = [];
+                array_push($zona_media_list_ii, "No Media Exists");
+            }
             return view('dashboard_satker.dashboardsatker_kanwil_nonadmin', compact('realisasi_publikasi_total_angka',
                 'zona_satker_list_ii_angka', 'satker', 'dtBerita', 'dtKonfig', 'queryBeritaGrafikJumlah', 'queryBeritaGrafikKode', 'zona_satker_list_ii',
                 'realisasi_publikasi_total', 'total', 'tgl_dari_default', 'tgl_sampai_default',
@@ -579,12 +572,16 @@ where tgl_input BETWEEN '$tgl_dari_default' and '$tgl_sampai_default' group by k
                 , 'completeNameRole', 'zona_publikasi_list_ii_kanwil_angka', 'realisasi_publikasi_kanwil_total_angka'
                 , 'total_kanwil_angka', 'zona_media_list_ii', 'realisasi_publikasi_total_linkmedia'));
         } else if (auth()->user()->roles == 'humas_satker') {
-            //echo "laman dashboard LAST SATKER broyyy"; die;
+            /*kondisi dibawah sebagai filter jika sebuah satker belum memiliki mediapartner*/
+            if ($data_zonaAll_Media->count() <= 0) {
+                $zona_media_list_ii = [];
+                array_push($zona_media_list_ii, "No Media Exists");
+            }
             return view('dashboard_satker.dashboardsatker_nonadmin', compact('satker', 'zona_satker_list_ii_angka',
-                'zona_media_list_ii','realisasi_publikasi_kanwil_total_angka',
+                'zona_media_list_ii', 'realisasi_publikasi_kanwil_total_angka',
                 'zona_publikasi_list_ii_kanwil_angka', 'realisasi_publikasi_total_angka',
                 'dtBerita', 'dtKonfig', 'tgl_dari_default', 'tgl_sampai_default', 'realisasi_publikasi_total',
-                'realisasi_publikasi_total_linkmedia','total', 'zona_satker_list_ii', 'realisasi_publikasi_kanwil_total', 'total_kanwil',
+                'realisasi_publikasi_total_linkmedia', 'total', 'zona_satker_list_ii', 'realisasi_publikasi_kanwil_total', 'total_kanwil',
                 'zona_publikasi_list_ii_kanwil', 'completeNameRole', 'zona_satker_list_ii_persen',
                 'realisasi_publikasi_total_persen', 'total_persen'));
         }
