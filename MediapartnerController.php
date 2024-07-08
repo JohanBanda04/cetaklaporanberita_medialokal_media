@@ -23,6 +23,7 @@ class MediapartnerController extends Controller
         //$this->authorize('admin');
         //echo auth()->user()->roles; die;
 
+        /*ini cara memberi otentikasi akses */
         /*ini di setting di AppServiceProvider.php*/
 //        if(auth()->user()->roles=="humas_satker"){
 //            abort(403);

@@ -69,7 +69,7 @@ Route::middleware(['auth:satker', 'checkrole'])->group(function () {
     Route::post('/satker/{id}/update', [DatasatkerController::class, 'update'])->name('satkerupdate');
     Route::post('/satker/{id}/delete', [DatasatkerController::class, 'delete'])->name('satkerdelete');
 
-    //DataMedia
+    //DataMedia Space
     Route::get('/datamedia', [MediapartnerController::class, 'index'])->name('datamedia');
     Route::post('/media/store', [MediapartnerController::class, 'store'])->name('mediastore');
     Route::post('/media/edit', [MediapartnerController::class, 'edit'])->name('mediaedit');
