@@ -543,9 +543,12 @@
                                                                 <option value="">-Nama Media-</option>
                                                                 <option value="no media">-No Media-</option>
                                                                 @foreach($getmedia as $idx=>$media)
-                                                                    <option value="{{ $media->kode_media }}">
-                                                                        {{ $media->name }}
-                                                                    </option>
+                                                                    @if($media->jenis_media=="media_lokal")
+                                                                        <option value="{{ $media->kode_media }}">
+                                                                            {{ $media->name }}
+                                                                        </option>
+                                                                    @endif
+
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -590,9 +593,12 @@
                                                                 <option value="">-Nama Media-</option>
                                                                 <option value="no media">-No Media-</option>
                                                                 @foreach($getmedia as $idx=>$media)
-                                                                    <option value="{{ $media->kode_media }}">
-                                                                        {{ $media->name }}
-                                                                    </option>
+                                                                    @if($media->jenis_media=="media_nasional")
+                                                                        <option value="{{ $media->kode_media }}">
+                                                                            {{ $media->name }}
+                                                                        </option>
+                                                                    @endif
+
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -808,7 +814,7 @@
 
                         '</td>' +
                         '<td style=""><div class="row"><div class=col-4><select required name="kode_media[]" id="kode_media[]" class="form-select"><option value="">-Nama Media-</option><option value="no media">-No Media-</option>' +
-                        '@foreach($getmedia as $id=>$med)<option value="{{ $med->kode_media }}">{{ $med->name }}</option>@endforeach</select></div>' +
+                        '@foreach($getmedia as $id=>$media) @if($media->jenis_media=="media_lokal")<option value="{{ $media->kode_media }}">{{ $media->name }}</option>@endif @endforeach</select></div>' +
                         '<div class="col-8"><input type="text" name="jumlah[]" id="jumlah[]" class="jumlah_medlok form-control" placeholder="Judul Berita|||Link Media Lokal"> </div></div>' +
                         '</td>' +
                         '</tr>' +
@@ -837,7 +843,7 @@
 
                         '</td>' +
                         '<td style=""><div class="row"><div class="col-4"><select required name="kode_media_nasional[]" id="kode_media_nasional[]" class="form-select">' +
-                        '<option value="">-Nama Media-</option><option value="no media">-No Media-</option>@foreach($getmedia as $idk=>$mednas)<option value="{{ $mednas->kode_media }}">{{ $mednas->name }}</option>@endforeach</select></div>' +
+                        '<option value="">-Nama Media-</option><option value="no media">-No Media-</option>@foreach($getmedia as $idk=>$mednas) @if($mednas->jenis_media=="media_nasional") <option value="{{ $mednas->kode_media }}">{{ $mednas->name }}</option> @endif @endforeach</select></div>' +
                         '<div class="col-8"><input type="text" name="jumlah_nasional[]" id="jumlah_nasional[]" ' +
                         'class="jumlah_mednas form-control" placeholder="Judul Berita|||Link Media Nasional" required ></div></div> ' +
 
