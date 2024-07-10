@@ -19,6 +19,8 @@ class MediapartnerController extends Controller
 {
     public function index(Request $request)
     {
+
+        $default_jenismedia = "";
         //return "tes data media partner broyyy"; die;
         //$this->authorize('admin');
         //echo auth()->user()->roles; die;
@@ -44,6 +46,14 @@ class MediapartnerController extends Controller
 
             $query->where('name', 'like', '%' . $request->nama_media_cari . '%');
         }
+
+        if (!empty($request->jenis_media)) {
+            $default_jenismedia = $request->jenis_media;
+            $query->where('jenis_media',$default_jenismedia);
+
+        }
+
+
         $query->orderBy("created_at", "desc");
         $mediapartners = $query->paginate(10);
 
@@ -55,7 +65,8 @@ class MediapartnerController extends Controller
         $kode_media = "MED-NTB-0" . $kode_new;
         $kode_satker_all = DB::table('satker')->get();
         //echo "<pre>"; print_r($kode_satker_all); die;
-        return view('mediapartner.index', compact('mediapartners', 'kode_media','kode_satker_all'));
+        return view('mediapartner.index', compact('mediapartners', 'kode_media','kode_satker_all'
+            ,'default_jenismedia'));
     }
 
     public function store(Request $request)
@@ -68,6 +79,7 @@ class MediapartnerController extends Controller
         $email = $request->email;
         $no_hp = $request->no_hp;
         $jenis_media = $request->jenis_media;
+        //echo $jenis_media; die;
         $kode_satker_penjalin = $request->kode_satker_penjalin;
         //echo $kode_satker_penjalin; die;
         if ($request->hasFile('foto')) {
