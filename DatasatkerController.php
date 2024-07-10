@@ -235,7 +235,7 @@ class DatasatkerController extends Controller
 
 
         $getmedia = DB::table('mediapartner')
-            ->where('kode_satker_penjalin',$kode_satker)
+            ->where('kode_satker_penjalin', $kode_satker)
             ->get();
 
         //dd($getmedia);
@@ -245,7 +245,7 @@ class DatasatkerController extends Controller
         } else if ($roles == 'humas_satker') {
             //return "prety";
 
-            return view('beritasatker.index', compact('getmedia','satker', 'berita_satker', 'dtsatker'));
+            return view('beritasatker.index', compact('getmedia', 'satker', 'berita_satker', 'dtsatker'));
         }
     }
 
@@ -962,17 +962,17 @@ class DatasatkerController extends Controller
                         $explode = explode("|||", $medlok);
                         $text = $section->addText($nmr . ". " . $explode[1], $firstStyle);
 
-			$firstStyle = 'firstStyle';
-			$secondStyle = 'secondStyle';
+                        $firstStyle = 'firstStyle';
+                        $secondStyle = 'secondStyle';
 
-			$phpword->addFontStyle($firstStyle,array('name'=>'Arial','size'=>12,'bold'=>true));     
-			$phpword->addFontStyle($secondStyle,array('name'=>'Arial','size'=>12,'bold'=>false));
-			if(isset($explode[2])){
+                        $phpword->addFontStyle($firstStyle, array('name' => 'Arial', 'size' => 12, 'bold' => true));
+                        $phpword->addFontStyle($secondStyle, array('name' => 'Arial', 'size' => 12, 'bold' => false));
+                        if (isset($explode[2])) {
 
-			$text = $section->addText($explode[2], $secondtStyle);
-} else if(!isset($explode[2])){
-$text = $section->addText("no data",$secondStyle);
-}
+                            $text = $section->addText($explode[2], $secondtStyle);
+                        } else if (!isset($explode[2])) {
+                            $text = $section->addText("no data", $secondStyle);
+                        }
                         $text = $section->addText("");
                     }
                     $nmr = $nmbr;
@@ -1234,18 +1234,18 @@ $text = $section->addText("no data",$secondStyle);
                             $explode = explode('|||', $medlok);
                             $text = $section->addText($no_berita_eksternal_2 . ". " . $explode[1], $firstStyle);
 
-			$secondStyle = 'secondStyle';
-			$firstStyle = 'firstStyle';
+                            $secondStyle = 'secondStyle';
+                            $firstStyle = 'firstStyle';
 
-			$phpword->addFontStyle($firstStyle,array('name'=>'Arial','size'=>12,'bold'=>true));
-			$phpword->addFontStyle($secondStyle,array('name'=>'Arial','size'=>12,'bold'=>false));
-                            if(isset($explode[2])){
-				
+                            $phpword->addFontStyle($firstStyle, array('name' => 'Arial', 'size' => 12, 'bold' => true));
+                            $phpword->addFontStyle($secondStyle, array('name' => 'Arial', 'size' => 12, 'bold' => false));
+                            if (isset($explode[2])) {
 
-                            $text = $section->addText($explode[2], $secondtStyle);
-}else if(!isset($explode[2])){
-$text = $section->addText("no data",$secondStyle);
-}
+
+                                $text = $section->addText($explode[2], $secondtStyle);
+                            } else if (!isset($explode[2])) {
+                                $text = $section->addText("no data", $secondStyle);
+                            }
                             //$text = $section->addText($no_berita_eksternal_2 . ". " . $medlok, $secondtStyle);
                             $text = $section->addText('');
                         }
@@ -1460,18 +1460,18 @@ $text = $section->addText("no data",$secondStyle);
 
                 $explode = explode("|||", $medlok);
                 $text = $section->addText($number . "." . $explode[1], $firstStyle);
-		$secondStyle = "secondStyle";
-		$firstStyle = "firstStyle";
-		
-		$phpword->addFontStyle($firstStyle,array('name'=>'Arial','size'=>12,'bold'=>true));
-		$phpword->addFontStyle($secondStyle,array('name'=>'Arial','size'=>12,'bold'=>false));		
-                
-		if(isset($explode[2])){
+                $secondStyle = "secondStyle";
+                $firstStyle = "firstStyle";
 
-$text = $section->addText($explode[2], $secondtStyle);
-} else if(!isset($explode[2])){
-$text = $section->addText("no data",$secondStyle);
-}
+                $phpword->addFontStyle($firstStyle, array('name' => 'Arial', 'size' => 12, 'bold' => true));
+                $phpword->addFontStyle($secondStyle, array('name' => 'Arial', 'size' => 12, 'bold' => false));
+
+                if (isset($explode[2])) {
+
+                    $text = $section->addText($explode[2], $secondtStyle);
+                } else if (!isset($explode[2])) {
+                    $text = $section->addText("no data", $secondStyle);
+                }
                 $text = $section->addText('');
             }
 
@@ -1482,12 +1482,12 @@ $text = $section->addText("no data",$secondStyle);
 
                 $explode = explode("|||", $mednas);
                 $text = $section->addText($number_nas . "." . $explode[1], $firstStyle);
-		if(isset($explode[2])){
+                if (isset($explode[2])) {
 
- $text = $section->addText($explode[2], $secondtStyle);
-} else if(!isset($explode[2])){
-$text = $section->addText("no data",$secondStyle);
-}
+                    $text = $section->addText($explode[2], $secondtStyle);
+                } else if (!isset($explode[2])) {
+                    $text = $section->addText("no data", $secondStyle);
+                }
                 $text = $section->addText('');
                 //$text = $section->addText($number_nas . "." . $mednas, $secondtStyle);
             }
@@ -1795,9 +1795,9 @@ $text = $section->addText("no data",$secondStyle);
         //echo $url_gabung_tosave; die;
         //echo sizeof($url_gabung); die;
         //echo $url_gabung; die;
-        if($url_gabung!="[]"){
+        if ($url_gabung != "[]") {
             $count_url_gabung = count($url_gabung);
-        } else if($url_gabung=="[]"){
+        } else if ($url_gabung == "[]") {
             $count_url_gabung = 0;
         }
 
@@ -1821,9 +1821,9 @@ $text = $section->addText("no data",$secondStyle);
         //echo json_encode($url_gabung); die;
         //echo $url_gabung_nasional_tosave; die;
         //echo count($url_gabung_nasional);die;
-        if($url_gabung_nasional!="[]"){
+        if ($url_gabung_nasional != "[]") {
             $count_url_gabung_nasional = count($url_gabung_nasional);
-        } else if($url_gabung_nasional=="[]"){
+        } else if ($url_gabung_nasional == "[]") {
             $count_url_gabung_nasional = 0;
         }
 
@@ -1837,19 +1837,19 @@ $text = $section->addText("no data",$secondStyle);
 
         //echo json_encode($url_gabung_nasional); die;
         $url_media_lokal_tosave = json_encode($url_gabung);
-        $tes='"[]"';
+        $tes = '"[]"';
         //echo "<br>tes: ".$tes; die;
-        if($url_media_lokal_tosave == $tes){
+        if ($url_media_lokal_tosave == $tes) {
             $url_media_lokal_tosave = '[]';
-        } else if($url_media_lokal_tosave != $tes){
+        } else if ($url_media_lokal_tosave != $tes) {
             $url_media_lokal_tosave = json_encode($url_gabung);
         }
 
         $url_media_nasional_tosave = json_encode($url_gabung_nasional);
 
-        if($url_media_nasional_tosave == $tes){
+        if ($url_media_nasional_tosave == $tes) {
             $url_media_nasional_tosave = '[]';
-        } else if($url_media_nasional_tosave != $tes){
+        } else if ($url_media_nasional_tosave != $tes) {
             $url_media_nasional_tosave = json_encode($url_gabung_nasional);
         }
 
@@ -1964,6 +1964,7 @@ $text = $section->addText("no data",$secondStyle);
 
     public function cetaklaporanberitamedia(Request $request)
     {
+        //return $request->kode_satker;
         //return "cetaklaporanberitamedia"; die;
         //dd($request);die;
         $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September",
@@ -1979,6 +1980,7 @@ $text = $section->addText("no data",$secondStyle);
         } else if (substr($bulan_dari, 0, 1) == 1) {
             $bulan_dari = substr($bulan_dari, 0, 2);
         }
+        //echo $bulan_dari; die;
         //dd($bulan_dari);
         $tahun_dari = $explode_dari[0];
         $tes = substr($bulan_dari, 1, 1);
@@ -2021,16 +2023,27 @@ where kode_satker='$kode_satker' and length(sippn)>10 AND tgl_input between '$da
         $total_youtube = DB::select(DB::raw("SELECT count(youtube) as jml_youtube from berita 
 where kode_satker='$kode_satker' and length(youtube)>10 AND tgl_input between '$dari' and '$sampai'"));
 
+        //return $kode_satker;
+        $get_roles = DB::table('satker')->where('kode_satker', $kode_satker)->first()->roles;
+        //echo "<pre>"; print_r($get_roles); die;
         $satker = DB::table('satker')->where('kode_satker', $kode_satker)->first();
-        //echo $kode_satker; die;
-        if(auth()->user()->roles=="superadmin"){
-            //echo "ini superadmin";
-            $mediapartner = DB::table('mediapartner')->get();
 
-        } else if(auth()->user()->roles=="humas_kanwil" || auth()->user()->roles=="humas_satker"){
-            //echo "ini humas kanwil / humas satker";
-            $mediapartner = DB::table('mediapartner')->where('kode_satker_penjalin', $kode_satker)->get();
+//        if (auth()->user()->roles == "superadmin") {
+//            $mediapartner = DB::table('mediapartner')->get();
+//
+//        } else if (auth()->user()->roles == "humas_kanwil" || auth()->user()->roles == "humas_satker") {
+//            $mediapartner = DB::table('mediapartner')->where('kode_satker_penjalin', $kode_satker)->get();
+//        }
+
+        if ($get_roles=="humas_kanwil") {
+
+        } else if ($get_roles=="humas_satker") {
+
         }
+
+        $mediapartner = DB::table('mediapartner')->where('kode_satker_penjalin', $kode_satker)->get();
+
+
         //echo "<pre>"; print_r($mediapartner); die;
         //die;
         $size_mediapartner = count($mediapartner);
@@ -2038,6 +2051,7 @@ where kode_satker='$kode_satker' and length(youtube)>10 AND tgl_input between '$
 
         //dd($tahun_sampai);
 
+        /*sementara ini utk jenis media = sosial_media tidak dipakai*/
         if ($request->jenis_media == "sosial_media") {
             //return "sosmed"; die;
             if (isset($_POST['exportexcelberita'])) {
@@ -2063,6 +2077,11 @@ where kode_satker='$kode_satker' and length(youtube)>10 AND tgl_input between '$
             //$links_media_lokal = json_decode($databerita->media_lokal);
             //return count($links_media_lokal);
             //dd($getberita);
+            /*intervensi mediapartner membedakan media lokal dan media nasional */
+            $mediapartner = DB::table('mediapartner')->where('kode_satker_penjalin', $kode_satker)
+                ->where('jenis_media','media_lokal')
+                ->get();
+            $size_mediapartner = count($mediapartner);
             if (isset($_POST['exportexcelberita'])) {
                 //dd($request);
                 //echo "exportexcelberita pressed";die;
@@ -2072,15 +2091,20 @@ where kode_satker='$kode_satker' and length(youtube)>10 AND tgl_input between '$
                 return view('laporan.cetaklaporanberita_excel_medialokal_media', compact('getberita',
                     'namabulan', 'tgl_dari', 'bulan_dari', 'tahun_dari', 'tgl_sampai', 'bulan_sampai', 'tahun_sampai',
                     'satker_name', 'total_website', 'total_facebook', 'total_instagram', 'total_twitter', 'total_tiktok', 'total_sippn',
-                    'total_youtube','size_mediapartner','mediapartner'));
+                    'total_youtube', 'size_mediapartner', 'mediapartner'));
             }
             //echo "woy blek"; die;
             //echo "<pre>"; print_r($getberita); die;
             return view('laporan.cetaklaporanberita_medialokal_media', compact('getberita',
                 'namabulan', 'tgl_dari', 'bulan_dari', 'tahun_dari', 'tgl_sampai', 'bulan_sampai', 'tahun_sampai',
-                'satker_name','size_mediapartner','mediapartner'));
+                'satker_name', 'size_mediapartner', 'mediapartner'));
         } else if ($request->jenis_media == "media_nasional") {
             //echo "media nasional selected"; die;
+            //echo "<pre>"; print_r($mediapartner); die;
+            $mediapartner = DB::table('mediapartner')->where('kode_satker_penjalin', $kode_satker)
+                ->where('jenis_media','media_nasional')
+                ->get();
+            $size_mediapartner = count($mediapartner);
             if (isset($_POST['exportexcelberita'])) {
                 //echo "export to excel media_nasional pressed"; die;
                 $time = date('d-M-Y H:i:s');
@@ -2089,12 +2113,12 @@ where kode_satker='$kode_satker' and length(youtube)>10 AND tgl_input between '$
                 return view('laporan.cetaklaporanberita_excel_medianasional_media', compact('getberita',
                     'namabulan', 'tgl_dari', 'bulan_dari', 'tahun_dari', 'tgl_sampai', 'bulan_sampai', 'tahun_sampai',
                     'satker_name', 'total_website', 'total_facebook', 'total_instagram', 'total_twitter', 'total_tiktok', 'total_sippn',
-                    'total_youtube','size_mediapartner','mediapartner'));
+                    'total_youtube', 'size_mediapartner', 'mediapartner'));
             }
 
             return view('laporan.cetaklaporanberita_medianasional_media', compact('getberita',
                 'namabulan', 'tgl_dari', 'bulan_dari', 'tahun_dari', 'tgl_sampai', 'bulan_sampai', 'tahun_sampai',
-                'satker_name','size_mediapartner','mediapartner'));
+                'satker_name', 'size_mediapartner', 'mediapartner'));
         }
 
     }
